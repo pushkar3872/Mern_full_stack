@@ -14,21 +14,25 @@ app.use(express.json());
 // Routes
 app.use('/api/users', userRoutes);
 
-// Basic route for testing
+// Basic route
 app.get('/', (req, res) => {
     res.send('User Management API is running...');
 });
 
-// Database connection & Server start
+// Environment variables
 const PORT = process.env.PORT || 5000;
 const MONGO_URI = process.env.MONGO_URI;
 
+// Connect DB and start server
 mongoose.connect(MONGO_URI)
     .then(() => {
         console.log('MongoDB Connected');
-        app.listen(PORT, () => {
+
+        // 🔥 IMPORTANT CHANGE HERE
+        app.listen(PORT, "0.0.0.0", () => {
             console.log(`🚀 Server running on port ${PORT}`);
         });
+
     })
     .catch((error) => {
         console.error('❌ MongoDB connection error:', error.message);
